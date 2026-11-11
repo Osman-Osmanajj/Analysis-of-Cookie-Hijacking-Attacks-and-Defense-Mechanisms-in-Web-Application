@@ -1,0 +1,31 @@
+{
+  "name": "analysis-of-cookie-hijacking-attacks-and-defense-mechanisms-in-web-application",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node --watch server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Osman-Osmanajj/Analysis-of-Cookie-Hijacking-Attacks-and-Defense-Mechanisms-in-Web-Application.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/Osman-Osmanajj/Analysis-of-Cookie-Hijacking-Attacks-and-Defense-Mechanisms-in-Web-Application/issues"
+  },
+  "homepage": "https://github.com/Osman-Osmanajj/Analysis-of-Cookie-Hijacking-Attacks-and-Defense-Mechanisms-in-Web-Application#readme",
+  "dependencies": {
+    "dotenv": "^18.0.10",
+    "express": "^5.3.0",
+    "express-session": "^1.19.0",
+    "helmet": "^8.3.0"
+  },
+  "script": {
+    "start": "node server.js"
+  }
+}
