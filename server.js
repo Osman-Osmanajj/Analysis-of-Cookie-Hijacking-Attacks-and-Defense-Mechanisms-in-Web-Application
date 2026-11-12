@@ -2,14 +2,17 @@
 import express from "express";
 import session from "express-session";
 import dotenv from "dotenv";
+import bcrypt from "bcrypt";
+import createAuthRoutes from "./routes/authRoutes.js";
 
 dotenv.config();
 
 const app = express();
 const PORT = 3000;
 
-if (!process.env.SESSION_SECRET) {
-    throw new Error("SESSION_SECRET is missing in .env file");
+if (!process.env.SESSION_SECRET || !process.env.DEMO_USERNAME || !process.env.DEMO_PASSWORD) {
+    throw new Error("Required enviroment variables are missing");
+    
 }
 
 app.use(express.json());
@@ -30,6 +33,21 @@ app.use(
     })
 );
 
+const passwordHash = await bcrypt.hash(
+    process.env.DEMO_PASSWORD,
+    12
+);
+
+app.use("/api/auth",
+    createAuthRoutes({
+        username:process.env.DEMO_USERNAME,
+        passwordHash:passwordHash
+    })
+);
+
+app.get("/", (req, res) => {
+    res.redirect("/login.html");
+});
 app.use(express.static("public"));
 
 app.get("/api/session-test", (req, res) => {
