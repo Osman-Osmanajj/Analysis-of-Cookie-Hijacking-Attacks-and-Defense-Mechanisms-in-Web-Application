@@ -26,6 +26,10 @@ event.preventDefault();
         if(data.success){
             if(data.success){
                 loginResult.style.color = "green";
+
+                setTimeout(() =>{
+                    window.location.href = "/dashboard";
+                },1000);
             }
             else{
                 loginResult.style.color = "red";
