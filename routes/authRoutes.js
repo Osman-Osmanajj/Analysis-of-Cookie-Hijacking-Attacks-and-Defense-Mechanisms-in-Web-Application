@@ -8,8 +8,9 @@ export default function createAuthRoutes({username,passwordHash}){
         try {
             const { username: submittedUsername, password} = req.body;
 
-            if(!submittedUsername || !password){
-                return res.status(404).json({
+            if (typeof submittedUsername !== "string" || !submittedUsername ||
+                typeof password !== "string" || !password){
+                return res.status(400).json({
                     success: false,
                     message: "Username and password are required"
                 });
@@ -21,7 +22,7 @@ export default function createAuthRoutes({username,passwordHash}){
             );
 
             if(!validUsername || !validPassword){
-                return res.status(404).json({
+                return res.status(401).json({
                     success: false,
                     message: "Invalid username or password"
                 });
@@ -29,7 +30,7 @@ export default function createAuthRoutes({username,passwordHash}){
             // Generate a new session ID after login
             req.session.regenerate((error) =>{
                 if(error){
-                    return res.status(404).json({
+                    return res.status(500).json({
                         success: false,
                         message: "Couldn't create session"
                     });
@@ -39,7 +40,7 @@ export default function createAuthRoutes({username,passwordHash}){
                 };
                 req.session.save((saveError) =>{
                     if(saveError){
-                        return res.status(404).json({
+                        return res.status(500).json({
                             success:false,
                             message: "Couldn't save session"
                         });
@@ -55,7 +56,7 @@ export default function createAuthRoutes({username,passwordHash}){
         } catch (error) {
             console.error(error);
 
-            res.status(404).json({
+            res.status(500).json({
                 success: false,
                 message: "Internal server error"
             });
@@ -63,7 +64,7 @@ export default function createAuthRoutes({username,passwordHash}){
     });
     router.get("/me",(req,res) =>{
         if(!req.session.user){
-            return res.status(404).json({
+            return res.status(401).json({
                 success:false,
                 message: "You are not authenticated"
             });
@@ -76,8 +77,8 @@ export default function createAuthRoutes({username,passwordHash}){
     router.post("/logout",(req,res) =>{
         req.session.destroy((error) =>{
             if(error) {
-                return res.status(404).json({
-                    succes: false,
+                return res.status(500).json({
+                    success: false,
                     message: "Logout failed"
                 });
             }

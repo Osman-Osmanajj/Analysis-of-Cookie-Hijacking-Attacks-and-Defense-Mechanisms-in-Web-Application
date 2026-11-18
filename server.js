@@ -11,13 +11,13 @@ import { requireAuth } from "./middleware/authMiddleware.js";
 dotenv.config();
 
 const app = express();
-const PORT = 3000;
+const PORT = Number(process.env.PORT || 3000);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 if (!process.env.SESSION_SECRET || !process.env.DEMO_USERNAME || !process.env.DEMO_PASSWORD) {
-    throw new Error("Required enviroment variables are missing");
+    throw new Error("Required environment variables are missing");
     
 }
 
@@ -64,8 +64,7 @@ app.get("/security-lab",requireAuth,(req,res)=>{
         path.join(__dirname,"views","security-lab.html")
     );
 });
-
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/api/session-test", (req, res) => {
     req.session.demo = true;

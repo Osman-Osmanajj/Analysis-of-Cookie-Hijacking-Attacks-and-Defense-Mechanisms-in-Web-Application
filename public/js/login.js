@@ -23,8 +23,7 @@ event.preventDefault();
 
         loginResult.textContent = data.message;
 
-        if(data.success){
-            if(data.success){
+        if(response.ok && data.success){
                 loginResult.style.color = "green";
 
                 setTimeout(() =>{
@@ -33,11 +32,10 @@ event.preventDefault();
             }
             else{
                 loginResult.style.color = "red";
-            }
         }
     } catch (error) {
         console.error(error);
         loginResult.textContent = "Couldn't connect to the server";
-        loginResult.style.color = " red ";        
+        loginResult.style.color = "red";
     }
 });
