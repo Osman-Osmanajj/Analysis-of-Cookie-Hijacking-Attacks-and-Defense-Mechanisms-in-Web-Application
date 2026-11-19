@@ -3,30 +3,31 @@ import bcrypt from "bcrypt";
 
 const router = express.Router();
 
-export default function createAuthRoutes({username,passwordHash}){
+export default function createAuthRoutes(usersCollection){
     router.post("/login",async (req,res) =>{
         try {
             const { username: submittedUsername, password} = req.body;
-
-            if (typeof submittedUsername !== "string" || !submittedUsername ||
-                typeof password !== "string" || !password){
-                return res.status(400).json({
-                    success: false,
-                    message: "Username and password are required"
-                });
-            }
-            const validUsername = submittedUsername === username;
-            const validPassword = await bcrypt.compare(
-                password,
-                passwordHash
-            );
-
-            if(!validUsername || !validPassword){
-                return res.status(401).json({
-                    success: false,
-                    message: "Invalid username or password"
-                });
-            }
+              if (
+            typeof submittedUsername !== "string" ||
+            !submittedUsername.trim() ||
+            typeof password !== "string" ||
+            !password
+        ) {
+            return res.status(400).json({
+                success: false,
+                message: "Username and password are required"
+            });
+        }
+            const normalizedUsername = submittedUsername.trim().toLowerCase();
+            const user = await usersCollection.findOne({
+            username: normalizedUsername
+        });
+        if (!user || !(await bcrypt.compare(password, user.passwordHash))) {
+            return res.status(401).json({
+                success: false,
+                message: "Invalid username or password"
+            });
+        }
             // Generate a new session ID after login
             req.session.regenerate((error) =>{
                 if(error){
@@ -36,7 +37,7 @@ export default function createAuthRoutes({username,passwordHash}){
                     });
                 }
                 req.session.user ={
-                    username:username
+                    username:user.username
                 };
                 req.session.save((saveError) =>{
                     if(saveError){
@@ -48,7 +49,7 @@ export default function createAuthRoutes({username,passwordHash}){
                     return res.json({
                         success:true,
                         message:"Login successful!",
-                        username: username
+                        username: user.username
                     });
                 });
             });

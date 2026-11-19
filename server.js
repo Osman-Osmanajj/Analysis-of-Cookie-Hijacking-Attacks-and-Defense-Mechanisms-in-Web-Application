@@ -2,11 +2,12 @@
 import express from "express";
 import session from "express-session";
 import dotenv from "dotenv";
-import bcrypt from "bcrypt";
 import createAuthRoutes from "./routes/authRoutes.js";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { requireAuth } from "./middleware/authMiddleware.js";   
+import { connectDatabase } from "./config/database.js";
+import createRegisterRoutes from "./routes/registerRoutes.js";
 
 dotenv.config();
 
@@ -15,10 +16,8 @@ const PORT = Number(process.env.PORT || 3000);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-if (!process.env.SESSION_SECRET || !process.env.DEMO_USERNAME || !process.env.DEMO_PASSWORD) {
-    throw new Error("Required environment variables are missing");
-    
+if (!process.env.SESSION_SECRET) {
+    throw new Error("SESSION_SECRET mungon në .env");
 }
 
 app.use(express.json());
@@ -39,17 +38,15 @@ app.use(
     })
 );
 
-const passwordHash = await bcrypt.hash(
-    process.env.DEMO_PASSWORD,
-    12
+const database = await connectDatabase();
+const usersCollection = database.collection("users");
+await usersCollection.createIndex(
+    {username: 1},
+    {unique: true}
 );
+app.use("/api/auth", createRegisterRoutes(usersCollection));
 
-app.use("/api/auth",
-    createAuthRoutes({
-        username:process.env.DEMO_USERNAME,
-        passwordHash:passwordHash
-    })
-);
+app.use("/api/auth",createAuthRoutes(usersCollection));
 
 app.get("/", (req, res) => {
     res.redirect("/login.html");

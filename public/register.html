@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        Regjistrimi - Cookie Hijacking Lab
+    </title>
+</head>
+<body>
+    <main class="container">
+        <h1>Krijo llogari</h1>
+        <p>Regjistro nje perdorues testues per analizimin e rrezikut te cookie hijacking</p>
+        <section class="card">
+            <h2>Regjistrimi</h2>
+            <form id="registerForm">
+                <label for="registerUsername">Username</label>
+                <input type="text" id="registerUsername" required>
+                <label for="password">Password</label>
+                <input type="password" id="registerPassword" required>
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" id="confirmPassword" required>
+                <button type="submit">Regjistrohu</button>
+
+            </form>
+
+            <p id="registerResult" role="status"></p>
+        </section>
+        <p><a href="/login.html">Kthehu ne Login</a></p>
+    </main>
+    <script src="/js/register.js"></script>
+</body>
+</html>

@@ -66,3 +66,16 @@ pre {
     white-space: pre-wrap;
     overflow-wrap: anywhere;
 }
+.register-button {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 11px 20px;
+    border-radius: 6px;
+    background: #2563eb;
+    color: white;
+    text-decoration: none;
+}
+
+.register-button:hover {
+    background: #1d4ed8;
+}
