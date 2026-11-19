@@ -22,3 +22,22 @@ readCookiesButton.addEventListener("click",() =>{
     cookieOutput.textContent = cookies || "No cookies accessible to JS";
 });
 checkSession();
+const logoutButton = document.getElementById("logoutButton");
+
+logoutButton.addEventListener("click", async () => {
+    try {
+        const response = await fetch("/api/auth/logout", {
+            method: "POST"
+        });
+        const data = await response.json();
+
+        if (response.ok && data.success) {
+            window.location.href = "/login.html";
+        } else {
+            sessionStatus.textContent = data.message || "Dalja nga llogaria dështoi";
+        }
+    } catch (error) {
+        console.error(error);
+        sessionStatus.textContent = "Nuk u arrit lidhja me serverin";
+    }
+});

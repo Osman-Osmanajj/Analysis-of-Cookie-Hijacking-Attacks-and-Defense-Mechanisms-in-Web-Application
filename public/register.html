@@ -1,33 +1,91 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sq">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>
-        Regjistrimi - Cookie Hijacking Lab
-    </title>
+    <title>Regjistrim | Cookie Hijacking Lab</title>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <main class="container">
-        <h1>Krijo llogari</h1>
-        <p>Regjistro nje perdorues testues per analizimin e rrezikut te cookie hijacking</p>
-        <section class="card">
-            <h2>Regjistrimi</h2>
-            <form id="registerForm">
-                <label for="registerUsername">Username</label>
-                <input type="text" id="registerUsername" required>
-                <label for="password">Password</label>
-                <input type="password" id="registerPassword" required>
-                <label for="confirmPassword">Confirm Password</label>
-                <input type="password" id="confirmPassword" required>
-                <button type="submit">Regjistrohu</button>
+    <header class="site-header">
+        <div class="header-inner">
+            <a class="brand" href="/login.html">
+                <span class="brand-icon" aria-hidden="true">◆</span>
+                <span>Cookie Hijacking Lab
+                    <small>Laborator i sigurisë web</small>
+                </span>
+            </a>
+            <nav class="site-nav" aria-label="Navigimi">
+                <a href="/login.html">Hyrje</a>
+                <a href="/register.html" aria-current="page">Regjistrim</a>
+            </nav>
+        </div>
+    </header>
 
+    <main class="container auth-layout">
+        <section class="auth-intro">
+            <p class="eyebrow">Krijo llogari testuese</p>
+            <h1>Fillo eksperimentin tënd.</h1>
+            <p class="lead">
+                Regjistro një përdorues për të provuar hyrjen, sesionet
+                dhe sjelljen e cookie-ve në laborator.
+            </p>
+            <ul class="highlights">
+                <li><span class="number">01</span> Krijo llogarinë.</li>
+                <li><span class="number">02</span> Kyçu në aplikacion.</li>
+                <li><span class="number">03</span> Hape Security Lab.</li>
+            </ul>
+        </section>
+
+        <section class="card auth-card">
+            <p class="eyebrow">Regjistrim</p>
+            <h2>Krijo llogari</h2>
+            <p class="card-description">Plotëso të dhënat për përdoruesin testues.</p>
+
+            <form id="registerForm" class="form">
+                <label for="registerUsername">Username</label>
+                <input
+                    type="text"
+                    id="registerUsername"
+                    placeholder="Zgjedh një username"
+                    autocomplete="username"
+                    required
+                >
+
+                <label for="registerPassword">Fjalëkalimi</label>
+                <input
+                    type="password"
+                    id="registerPassword"
+                    placeholder="Shkruaj fjalëkalimin"
+                    autocomplete="new-password"
+                    required
+                >
+
+                <label for="confirmPassword">Konfirmo fjalëkalimin</label>
+                <input
+                    type="password"
+                    id="confirmPassword"
+                    placeholder="Shkruaje përsëri fjalëkalimin"
+                    autocomplete="new-password"
+                    required
+                >
+
+                <button class="btn btn-primary" type="submit">Regjistrohu</button>
             </form>
 
-            <p id="registerResult" role="status"></p>
+            <p id="registerResult" class="form-message" role="status" aria-live="polite"></p>
+
+            <div class="card-footer">
+                Ke llogari?
+                <a href="/login.html">Kthehu te hyrja</a>
+            </div>
         </section>
-        <p><a href="/login.html">Kthehu ne Login</a></p>
     </main>
+
+    <footer class="site-footer">
+        Cookie Hijacking Lab · Projekt demonstrues lokal
+    </footer>
+
     <script src="/js/register.js"></script>
 </body>
 </html>

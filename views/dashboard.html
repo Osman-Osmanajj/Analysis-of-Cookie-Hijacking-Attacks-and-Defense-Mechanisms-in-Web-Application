@@ -1,29 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sq">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Cookie Hijacking Analysis</title>
+    <title>Paneli | Cookie Hijacking Lab</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-    <main class="container">
-        <h1>Dashboard</h1>
-        <section class="card">
-            <h2>Welcome</h2>
-            <p id="WelcomeMessage">
-                Loading user information...
-            </p>
-            <p>
-            You are successfully authenticated.
-            </p>
-            <button id="logoutButton">Logout</button>
-            <p id="logoutResult"></p>
-            <p>
-                <a href="/security-lab">Open Security Lab</a>
-            </p>
-        </section>
+    <header class="site-header">
+        <div class="header-inner">
+            <a class="brand" href="/dashboard">
+                <span class="brand-icon" aria-hidden="true">◆</span>
+                <span>Cookie Hijacking Lab
+                    <small>Laborator i sigurisë web</small>
+                </span>
+            </a>
+           <nav class="site-nav" aria-label="Navigimi">
+         <a href="/dashboard" aria-current="page">Paneli</a>
+         <a href="/security-lab">Security Lab</a>
+         <button id="logoutButton" class="btn btn-secondary header-logout" type="button">
+         Log Out
+    </button>
+</nav>
+        </div>
+    </header>
+
+    <main class="container main-space">
+        <div class="page-heading">
+            <p class="eyebrow">Paneli i përdoruesit</p>
+            <h1>Je brenda laboratorit.</h1>
+            <p id="WelcomeMessage">Duke ngarkuar të dhënat e përdoruesit...</p>
+        </div>
+
+        <div class="grid-two">
+            <section class="card">
+                <p class="eyebrow">Sesioni</p>
+                <h2>Hyrja u krye me sukses</h2>
+                <p>
+                    Serveri e njeh sesionin tënd përmes cookie-së
+                    <strong>diploma_session</strong>.
+                </p>
+                <a class="btn btn-primary card-action" href="/security-lab">
+                    Hape Security Lab
+                </a>
+            </section>
+
+            <section class="card">
+                <p class="eyebrow">Udhëzues i shkurtër</p>
+                <h2>Çfarë mund të provosh?</h2>
+                <ol class="steps">
+                    <li><span class="number">01</span> Kontrollo gjendjen e sesionit.</li>
+                    <li><span class="number">02</span> Provo leximin e cookie-së nga JavaScript.</li>
+                    <li><span class="number">03</span> Krahaso sjelljen me dhe pa HttpOnly.</li>
+                </ol>
+            </section>
+        </div>
+
+        <div class="info-box">
+            <strong>Eksperiment lokal:</strong>
+            përdor vetëm llogari testuese dhe shfletuesit e tu për demonstrimet.
+        </div>
+        <p id="logoutResult" class="form-message" role="status"></p>
     </main>
+
+    <footer class="site-footer">
+        Cookie Hijacking Lab · Projekt demonstrues lokal
+    </footer>
+
     <script src="/js/dashboard.js"></script>
 </body>
 </html>
