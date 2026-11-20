@@ -8,11 +8,15 @@ import { fileURLToPath } from "node:url";
 import { requireAuth } from "./middleware/authMiddleware.js";   
 import { connectDatabase } from "./config/database.js";
 import createRegisterRoutes from "./routes/registerRoutes.js";
+import { createServer } from "node:https";
+import { readFileSync } from "node:fs";
+import helmet  from "helmet";
 
 dotenv.config();
 
 const app = express();
 const PORT = Number(process.env.PORT || 3000);
+const HTTPS_ENABLED = process.env.HTTPS_ENABLED === "true";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -20,6 +24,14 @@ if (!process.env.SESSION_SECRET) {
     throw new Error("SESSION_SECRET mungon në .env");
 }
 
+app.use(helmet({
+    contentSecurityPolicy:{
+        directives: {
+            "upgrade-insecure-requests": null
+        }
+    },
+    strictTransportSecurity: false
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -31,7 +43,7 @@ app.use(
         saveUninitialized: false,
         cookie: {
             httpOnly: true,
-            secure: false,
+            secure: HTTPS_ENABLED,
             sameSite: "lax",
             maxAge: 15 * 60 * 1000
         }
@@ -80,6 +92,25 @@ app.get("/api/status", (req, res) => {
     });
 });
 
-app.listen(PORT, "127.0.0.1", () => {
-    console.log(`Server running at http://127.0.0.1:${PORT}`);
-});
+// app.listen(PORT, "127.0.0.1", () => {
+//     console.log(`Server running at http://127.0.0.1:${PORT}`);
+// });
+
+//Komanda per HTTPS enable
+if (HTTPS_ENABLED) {
+    const server = createServer(
+        {
+            key: readFileSync(path.join(__dirname, "certs", "localhost-key.pem")),
+            cert: readFileSync(path.join(__dirname, "certs", "localhost.pem"))
+        },
+        app
+    );
+
+    server.listen(PORT, "127.0.0.1", () => {
+        console.log(`Server running at https://127.0.0.1:${PORT}`);
+    });
+} else {
+    app.listen(PORT, "127.0.0.1", () => {
+        console.log(`Server running at http://127.0.0.1:${PORT}`);
+    });
+}
