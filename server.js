@@ -17,6 +17,8 @@ dotenv.config();
 const app = express();
 const PORT = Number(process.env.PORT || 3000);
 const HTTPS_ENABLED = process.env.HTTPS_ENABLED === "true";
+const SESSION_COOKIE_NAME = HTTPS_ENABLED
+    ?"__Host-diploma_session" : "diploma_session";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -35,20 +37,49 @@ app.use(helmet({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use(
-    session({
-        name: "diploma_session",
-        secret: process.env.SESSION_SECRET,
-        resave: false,
-        saveUninitialized: false,
-        cookie: {
-            httpOnly: true,
-            secure: HTTPS_ENABLED,
-            sameSite: "lax",
-            maxAge: 15 * 60 * 1000
+const SESSION_COOKIE_SETTINGS = {
+    path: "/",
+    httpOnly: true,
+    secure: HTTPS_ENABLED,
+    sameSite: "lax",
+    maxAge: 15 * 60 * 1000
+};
+
+app.use(session({
+    name: SESSION_COOKIE_NAME,
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: SESSION_COOKIE_SETTINGS
+}));
+app.use((req,res,next) =>{
+    if(!req.session.user){
+        return next();
+    }
+    const currentUserAgent = req.get("User-Agent") ?? "";
+    if(req.session.browserUserAgent === currentUserAgent){
+        return next();
+    }
+    req.session.destroy((error)=>{
+        if(error){
+            return next(error);
         }
-    })
-);
+        res.clearCookie(SESSION_COOKIE_NAME,{
+            path: "/",
+            secure: HTTPS_ENABLED,
+            httpOnly: true,
+            sameSite: "lax"
+        });
+
+        if(req.path.startsWith("/api/")){
+            return res.status(401).json({
+                success: false,
+                message: "Sessionu u anulua sepse ndryshoi shfletuesi.Kyçu perseri!"
+            });
+        }
+        return res.redirect("/login.html");
+    });
+});
 
 const database = await connectDatabase();
 const usersCollection = database.collection("users");
@@ -58,10 +89,17 @@ await usersCollection.createIndex(
 );
 app.use("/api/auth", createRegisterRoutes(usersCollection));
 
-app.use("/api/auth",createAuthRoutes(usersCollection));
+app.use("/api/auth",createAuthRoutes(usersCollection,SESSION_COOKIE_NAME,HTTPS_ENABLED));
 
 app.get("/", (req, res) => {
     res.redirect("/login.html");
+});
+app.get("/login.html", (req, res) => {
+    res.sendFile(path.join(__dirname, "views", "login.html"));
+});
+
+app.get("/register.html", (req, res) => {
+    res.sendFile(path.join(__dirname, "views", "register.html"));
 });
 
 app.get("/dashboard",requireAuth,(req,res) => {
@@ -75,27 +113,20 @@ app.get("/security-lab",requireAuth,(req,res)=>{
 });
 app.use(express.static(path.join(__dirname, "public")));
 
-app.get("/api/session-test", (req, res) => {
-    req.session.demo = true;
-
-    res.json({
-        success: true,
-        message: "Test session created successfully!"
-    });
-});
-
 app.get("/api/status", (req, res) => {
     res.json({
         application: "Cookie Hijacking Analysis",
         status: "Running",
-        mode: "Insecure Lab"
+        protocol: HTTPS_ENABLED ? "HTTPS" : "HTTP",
+        cookie: {
+            name:  SESSION_COOKIE_NAME,
+            httpOnly: SESSION_COOKIE_SETTINGS.httpOnly,
+            secure: SESSION_COOKIE_SETTINGS.secure,
+            sameSite: SESSION_COOKIE_SETTINGS.sameSite,
+            maxAgeMinutes: SESSION_COOKIE_SETTINGS.maxAge / 60000
+        }
     });
 });
-
-// app.listen(PORT, "127.0.0.1", () => {
-//     console.log(`Server running at http://127.0.0.1:${PORT}`);
-// });
-
 //Komanda per HTTPS enable
 if (HTTPS_ENABLED) {
     const server = createServer(

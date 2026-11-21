@@ -25,44 +25,130 @@
         </div>
     </header>
 
-    <main class="container main-space">
-        <div class="page-heading">
+   <main class="container main-space dashboard-page">
+    <section class="dashboard-hero">
+        <div>
             <p class="eyebrow">Paneli i përdoruesit</p>
-            <h1>Je brenda laboratorit.</h1>
-            <p id="WelcomeMessage">Duke ngarkuar të dhënat e përdoruesit...</p>
+            <h1>Mirë se erdhe në laborator.</h1>
+            <p id="WelcomeMessage" class="hero-user">
+                Duke kontrolluar përdoruesin...
+            </p>
+            <p class="hero-description">
+                Eksploro si krijohet sesioni, si përdoret cookie-ja
+                dhe cilat mbrojtje janë aktive në këtë konfigurim.
+            </p>
         </div>
 
-        <div class="grid-two">
-            <section class="card">
-                <p class="eyebrow">Sesioni</p>
-                <h2>Hyrja u krye me sukses</h2>
+        <div id="modeBadge" class="mode-badge" role="status">
+            Duke kontrolluar lidhjen...
+        </div>
+    </section>
+
+    <section class="status-grid" aria-label="Gjendja e mbrojtjeve">
+        <div class="status-card">
+            <span class="status-icon" aria-hidden="true">TLS</span>
+            <div>
+                <span class="status-label">Protokolli</span>
+                <strong id="protocolValue">...</strong>
+            </div>
+        </div>
+
+        <div class="status-card">
+            <span class="status-icon" aria-hidden="true">JS</span>
+            <div>
+                <span class="status-label">HttpOnly</span>
+                <strong id="httpOnlyValue">...</strong>
+            </div>
+        </div>
+
+        <div class="status-card">
+            <span class="status-icon" aria-hidden="true">CK</span>
+            <div>
+                <span class="status-label">Secure</span>
+                <strong id="secureValue">...</strong>
+            </div>
+        </div>
+
+        <div class="status-card">
+            <span class="status-icon" aria-hidden="true">SS</span>
+            <div>
+                <span class="status-label">SameSite</span>
+                <strong id="sameSiteValue">...</strong>
+            </div>
+        </div>
+    </section>
+
+    <section class="flow-section" aria-labelledby="flowTitle">
+        <p class="eyebrow">Si funksionon?</p>
+        <h2 id="flowTitle">Rrjedha e sesionit</h2>
+        <p class="section-description">
+            Katër hapa nga kyçja deri te verifikimi i përdoruesit.
+        </p>
+
+        <ol class="session-flow">
+            <li>
+                <span class="flow-number">1</span>
+                <strong>Kyçja</strong>
+                <small>Përdoruesi jep të dhënat.</small>
+            </li>
+            <li>
+                <span class="flow-number">2</span>
+                <strong>Krijimi i sesionit</strong>
+                <small>Serveri krijon ID të re.</small>
+            </li>
+            <li>
+                <span class="flow-number">3</span>
+                <strong>Cookie në shfletues</strong>
+                <small>Shfletuesi ruan ID-në.</small>
+            </li>
+            <li>
+                <span class="flow-number">4</span>
+                <strong>Verifikimi</strong>
+                <small>Serveri njeh kërkesat pasuese.</small>
+            </li>
+        </ol>
+    </section>
+
+    <section class="feature-grid" aria-label="Provat e laboratorit">
+        <article class="card feature-card">
+            <span class="feature-icon" aria-hidden="true">&lt;/&gt;</span>
+            <div>
+                <p class="eyebrow">Eksperimenti 01</p>
+                <h2>Leximi nga JavaScript</h2>
                 <p>
-                    Serveri e njeh sesionin tënd përmes cookie-së
-                    <strong>diploma_session</strong>.
+                    Provo nëse JavaScript mund ta lexojë cookie-n
+                    e sesionit në konfigurimin aktual.
                 </p>
-                <a class="btn btn-primary card-action" href="/security-lab">
-                    Hape Security Lab
+                <a class="btn btn-primary" href="/security-lab">
+                    Provo leximin
                 </a>
-            </section>
+            </div>
+        </article>
 
-            <section class="card">
-                <p class="eyebrow">Udhëzues i shkurtër</p>
-                <h2>Çfarë mund të provosh?</h2>
-                <ol class="steps">
-                    <li><span class="number">01</span> Kontrollo gjendjen e sesionit.</li>
-                    <li><span class="number">02</span> Provo leximin e cookie-së nga JavaScript.</li>
-                    <li><span class="number">03</span> Krahaso sjelljen me dhe pa HttpOnly.</li>
-                </ol>
-            </section>
-        </div>
+        <article class="card feature-card">
+            <span class="feature-icon" aria-hidden="true">↗</span>
+            <div>
+                <p class="eyebrow">Eksperimenti 02</p>
+                <h2>Trafiku HTTP/HTTPS</h2>
+                <p>
+                    Krahaso trafikun e rrjetit me Wireshark
+                    dhe shiko ndikimin e HTTPS.
+                </p>
+                <a class="btn btn-primary" href="/security-lab">
+                    Shiko udhëzimin
+                </a>
+            </div>
+        </article>
+    </section>
 
-        <div class="info-box">
-            <strong>Eksperiment lokal:</strong>
-            përdor vetëm llogari testuese dhe shfletuesit e tu për demonstrimet.
-        </div>
-        <p id="logoutResult" class="form-message" role="status"></p>
-    </main>
+    <div class="info-box">
+        Cookie-ja e këtij konfigurimi quhet
+        <strong id="cookieName">duke u ngarkuar...</strong>.
+        Këtu shfaqet vetëm emri, jo vlera e saj.
+    </div>
 
+    <p id="logoutResult" class="form-message" role="status"></p>
+</main>
     <footer class="site-footer">
         Cookie Hijacking Lab · Projekt demonstrues lokal
     </footer>

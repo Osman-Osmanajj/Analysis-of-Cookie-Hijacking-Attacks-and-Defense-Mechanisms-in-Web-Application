@@ -3,7 +3,7 @@ import bcrypt from "bcrypt";
 
 const router = express.Router();
 
-export default function createAuthRoutes(usersCollection){
+export default function createAuthRoutes(usersCollection,sessionCookieName,httpsEnabled){
     router.post("/login",async (req,res) =>{
         try {
             const { username: submittedUsername, password} = req.body;
@@ -39,6 +39,7 @@ export default function createAuthRoutes(usersCollection){
                 req.session.user ={
                     username:user.username
                 };
+                req.session.browserUserAgent = req.get("User-Agent") ?? "";
                 req.session.save((saveError) =>{
                     if(saveError){
                         return res.status(500).json({
@@ -83,7 +84,12 @@ export default function createAuthRoutes(usersCollection){
                     message: "Logout failed"
                 });
             }
-            res.clearCookie("diploma_session");
+            res.clearCookie(sessionCookieName,{
+                path: "/",
+                secure: httpsEnabled,
+                httpOnly: true,
+                sameSite: "lax"
+            });
 
             res.json({
                 success:true,

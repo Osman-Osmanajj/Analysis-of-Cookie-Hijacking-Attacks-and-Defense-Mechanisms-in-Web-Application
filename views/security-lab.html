@@ -24,45 +24,135 @@
         </nav>
         </div>
     </header>
-
-    <main class="container main-space">
-        <div class="page-heading">
-            <p class="eyebrow">Eksperimenti i cookie-ve</p>
+<main class="container main-space">
+    <section class="lab-hero">
+        <div>
+            <p class="eyebrow">Eksperimentet e cookie-ve</p>
             <h1>Security Lab</h1>
             <p>
-                Shiko gjendjen e sesionit dhe provo nëse JavaScript
-                mund ta lexojë cookie-n në konfigurimin aktual.
+                Provo si sillet sesioni dhe shiko cilat mbrojtje
+                janë aktive në konfigurimin aktual.
             </p>
         </div>
 
-        <div class="grid-two">
-            <section class="card">
-                <p class="eyebrow">Kontrolli 01</p>
-                <h2>Gjendja e sesionit</h2>
-                <p id="sessionStatus">Duke kontrolluar sesionin...</p>
-            </section>
-
-            <section class="card">
-                <p class="eyebrow">Kontrolli 02</p>
-                <h2>Leximi nga JavaScript</h2>
-                <p>
-                    Butoni më poshtë provon të lexojë cookie-t
-                    përmes <code>document.cookie</code>.
-                </p>
-                <pre id="cookieOutput" class="cookie-output">Shtyp butonin për të filluar provën.</pre>
-                <button id="readCookies" class="btn btn-primary" type="button">
-                    Lexo cookie-t
-                </button>
-            </section>
+        <div id="labModeBadge" class="mode-badge" role="status">
+            Duke kontrolluar lidhjen...
         </div>
+    </section>
 
-        <div class="info-box">
-            <strong>Si ta interpretosh:</strong>
-            nëse cookie-ja e sesionit shfaqet, JavaScript mund ta lexojë.
-            Nëse nuk shfaqet pasi aktivizon HttpOnly, sesioni mund të vazhdojë
-            të punojë normalisht në shfletues.
+    <section class="lab-grid" aria-label="Provat e laboratorit">
+        <article class="card lab-card" id="javascript-test">
+            <span class="lab-icon" aria-hidden="true">&lt;/&gt;</span>
+            <p class="eyebrow">Prova 01</p>
+            <h2>Leximi nga JavaScript</h2>
+            <p>
+                Provo nëse cookie-ja e sesionit shfaqet
+                përmes <code>document.cookie</code>.
+            </p>
+
+            <div class="code-label">document.cookie</div>
+
+            <button id="readCookies" class="btn btn-primary" type="button" disabled>
+                Provo leximin
+            </button>
+
+            <p id="cookieVerdict" class="result-box" role="status" aria-live="polite">
+                Shtyp butonin për ta nisur provën.
+            </p>
+
+            <pre id="cookieOutput" class="cookie-output">
+Vlera e cookie-së nuk shfaqet automatikisht.</pre>
+
+            <button
+                id="toggleCookieValue"
+                class="btn btn-secondary reveal-button"
+                type="button"
+                hidden
+            >
+                Shfaq vlerën
+            </button>
+        </article>
+
+        <article class="card lab-card" id="session-test">
+            <span class="lab-icon" aria-hidden="true">◎</span>
+            <p class="eyebrow">Prova 02</p>
+            <h2>Kontrolli i sesionit</h2>
+            <p>
+                Pyete serverin nëse sesioni yt është ende i vlefshëm.
+            </p>
+
+            <p id="sessionStatus" class="session-user">
+                Duke kontrolluar sesionin...
+            </p>
+
+            <button id="checkSessionButton" class="btn btn-primary" type="button">
+                Verifiko sesionin
+            </button>
+
+            <p id="sessionResult" class="result-box" role="status" aria-live="polite">
+                Rezultati do të shfaqet këtu.
+            </p>
+        </article>
+
+        <article class="card lab-card" id="network-test">
+            <span class="lab-icon" aria-hidden="true">↗</span>
+            <p class="eyebrow">Prova 03</p>
+            <h2>Trafiku në rrjet</h2>
+            <p>
+                Krahaso në Wireshark trafikun HTTP me trafikun HTTPS.
+            </p>
+
+            <div class="traffic-compare">
+                <div class="traffic-box traffic-http">
+                    <strong>HTTP</strong>
+                    <span>Trafik i lexueshëm</span>
+                </div>
+                <div class="traffic-box traffic-https">
+                    <strong>HTTPS</strong>
+                    <span>Trafik i koduar</span>
+                </div>
+            </div>
+
+            <p class="current-transport">
+                Lidhja aktuale: <strong id="currentTransport">...</strong>
+            </p>
+
+            <button
+                id="showTrafficSteps"
+                class="btn btn-secondary"
+                type="button"
+                aria-expanded="false"
+            >
+                Shiko hapat për Wireshark
+            </button>
+
+            <ol id="trafficSteps" class="traffic-steps" hidden>
+                <li>Hape Wireshark dhe zgjedh adapterin për loopback.</li>
+                <li>Fillo kapjen dhe vendos filtrin <code>tcp.port == 3000</code>.</li>
+                <li>Ngarko përsëri këtë faqe në shfletues.</li>
+                <li>Hap një paketë dhe përdor <em>Follow TCP Stream</em>.</li>
+                <li>Krahaso çka shihet në HTTP dhe në HTTPS.</li>
+            </ol>
+        </article>
+    </section>
+
+    <section class="protection-strip" aria-label="Interpretimi i mbrojtjeve">
+        <div>
+            <strong>HTTPS</strong>
+            <span>Kodon trafikun gjatë transmetimit.</span>
         </div>
-    </main>
+        <div>
+            <strong>HttpOnly</strong>
+            <span>Ndalon leximin e cookie-së nga JavaScript.</span>
+        </div>
+        <div>
+            <strong>Sesioni</strong>
+            <span>Cookie-ja e vjedhur mbetet rrezik deri në anulim ose skadim.</span>
+        </div>
+    </section>
+
+    <p id="logoutResult" class="form-message" role="status"></p>
+</main>
 
     <footer class="site-footer">
         Cookie Hijacking Lab · Projekt demonstrues lokal
