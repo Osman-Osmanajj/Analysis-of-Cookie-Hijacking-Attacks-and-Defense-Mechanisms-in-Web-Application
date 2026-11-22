@@ -7,7 +7,6 @@ const cookieOutput = document.getElementById("cookieOutput");
 const toggleCookieValue = document.getElementById("toggleCookieValue");
 
 const checkSessionButton = document.getElementById("checkSessionButton");
-const sessionStatus = document.getElementById("sessionStatus");
 const sessionResult = document.getElementById("sessionResult");
 
 const showTrafficSteps = document.getElementById("showTrafficSteps");
@@ -64,7 +63,6 @@ async function checkSession() {
         });
 
         if (response.status === 401) {
-            sessionStatus.textContent = "Nuk je i kyçur.";
             showResult(
                 sessionResult,
                 "Sesioni ka skaduar ose është anuluar.",
@@ -76,17 +74,13 @@ async function checkSession() {
         if (!response.ok) {
             throw new Error("Kontrolli i sesionit dështoi");
         }
+      const data = await response.json();
 
-        const data = await response.json();
-
-        sessionStatus.textContent =
-            `I kyçur si ${data.user.username}`;
-
-        showResult(
-            sessionResult,
-            "Sesioni është aktiv. Serveri të njeh.",
-            "is-good"
-        );
+    showResult(
+        sessionResult,
+        `Sesioni është aktiv. Ti je kyçur si ${data.user.username}.`,
+       "is-good"
+    );
     } catch (error) {
         console.error(error);
         showResult(
@@ -190,4 +184,4 @@ logoutButton.addEventListener("click", async () => {
 });
 
 loadLabConfig();
-checkSession();
+// checkSession();

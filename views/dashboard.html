@@ -30,9 +30,6 @@
         <div>
             <p class="eyebrow">Paneli i përdoruesit</p>
             <h1>Mirë se erdhe në laborator.</h1>
-            <p id="WelcomeMessage" class="hero-user">
-                Duke kontrolluar përdoruesin...
-            </p>
             <p class="hero-description">
                 Eksploro si krijohet sesioni, si përdoret cookie-ja
                 dhe cilat mbrojtje janë aktive në këtë konfigurim.
@@ -44,39 +41,61 @@
         </div>
     </section>
 
-    <section class="status-grid" aria-label="Gjendja e mbrojtjeve">
-        <div class="status-card">
+   <section class="status-grid" aria-label="Gjendja e mbrojtjeve">
+    <details class="status-card" id="protocolCard" name="protections">
+        <summary>
             <span class="status-icon" aria-hidden="true">TLS</span>
-            <div>
+            <span>
                 <span class="status-label">Protokolli</span>
                 <strong id="protocolValue">...</strong>
-            </div>
+            </span>
+        </summary>
+        <div class="status-details">
+            <p>HTTPS kodon trafikun gjatë transmetimit. Në HTTP, trafiku mund të lexohet.</p>
+            <a href="/security-lab#network-test">Shiko provën Wireshark →</a>
         </div>
+    </details>
 
-        <div class="status-card">
+    <details class="status-card" id="httpOnlyCard" name="protections">
+        <summary>
             <span class="status-icon" aria-hidden="true">JS</span>
-            <div>
+            <span>
                 <span class="status-label">HttpOnly</span>
                 <strong id="httpOnlyValue">...</strong>
-            </div>
+            </span>
+        </summary>
+        <div class="status-details">
+            <p>Kur është aktiv, JavaScript nuk mund ta lexojë cookie-n e sesionit.</p>
+            <a href="/security-lab#javascript-test">Provo leximin →</a>
         </div>
+    </details>
 
-        <div class="status-card">
+    <details class="status-card" id="secureCard" name="protections" >
+        <summary>
             <span class="status-icon" aria-hidden="true">CK</span>
-            <div>
+            <span>
                 <span class="status-label">Secure</span>
                 <strong id="secureValue">...</strong>
-            </div>
+            </span>
+        </summary>
+        <div class="status-details">
+            <p>Kur është aktiv, cookie-ja e sesionit dërgohet përmes HTTPS.</p>
         </div>
+    </details>
 
-        <div class="status-card">
+    <details class="status-card" id="sameSiteCard" name="protections">
+        <summary>
             <span class="status-icon" aria-hidden="true">SS</span>
-            <div>
+            <span>
                 <span class="status-label">SameSite</span>
                 <strong id="sameSiteValue">...</strong>
-            </div>
+            </span>
+        </summary>
+        <div class="status-details">
+            <p>Ky atribut kontrollon kur cookie-ja dërgohet në kërkesa nga faqe të tjera.</p>
         </div>
-    </section>
+    </details>
+</section>
 
     <section class="flow-section" aria-labelledby="flowTitle">
         <p class="eyebrow">Si funksionon?</p>
@@ -109,38 +128,52 @@
         </ol>
     </section>
 
-    <section class="feature-grid" aria-label="Provat e laboratorit">
-        <article class="card feature-card">
-            <span class="feature-icon" aria-hidden="true">&lt;/&gt;</span>
-            <div>
-                <p class="eyebrow">Eksperimenti 01</p>
-                <h2>Leximi nga JavaScript</h2>
-                <p>
-                    Provo nëse JavaScript mund ta lexojë cookie-n
-                    e sesionit në konfigurimin aktual.
-                </p>
-                <a class="btn btn-primary" href="/security-lab">
-                    Provo leximin
-                </a>
-            </div>
-        </article>
+   <section class="findings-section" aria-labelledby="findingsTitle">
+    <p class="eyebrow">Rezultatet e eksperimenteve</p>
+    <h2 id="findingsTitle">Çka dëshmojnë provat?</h2>
 
-        <article class="card feature-card">
-            <span class="feature-icon" aria-hidden="true">↗</span>
-            <div>
-                <p class="eyebrow">Eksperimenti 02</p>
-                <h2>Trafiku HTTP/HTTPS</h2>
-                <p>
-                    Krahaso trafikun e rrjetit me Wireshark
-                    dhe shiko ndikimin e HTTPS.
-                </p>
-                <a class="btn btn-primary" href="/security-lab">
-                    Shiko udhëzimin
-                </a>
-            </div>
-        </article>
-    </section>
+    <div class="findings-panel">
+        <article class="finding">
+            <span class="finding-tag">01 · JavaScript</span>
+            <h3>Leximi i cookie-së</h3>
 
+            <ul>
+                <li>JavaScript mund t’i lexojë cookie-t që nuk kanë HttpOnly.</li>
+                <li>Me HttpOnly aktiv, cookie-ja e sesionit nuk shfaqet në <code>document.cookie</code>.</li>
+            </ul>
+
+            <p class="finding-takeaway">
+                HttpOnly kufizon leximin nga JavaScript.
+            </p>
+        </article>
+        <article class="finding">
+     <span class="finding-tag">02 · Sesioni</span>
+     <h3>Kontrolli i sesionit</h3>
+
+        <ul>
+        <li>Me sesion aktiv, serveri kthen <code>200 OK</code>.</li>
+        <li>Pas Log Out, e njëjta kërkesë kthen <code>401</code>.</li>
+     </ul>
+
+        <p class="finding-takeaway">
+        Serveri refuzon sesionin e anuluar.
+         </p>
+    </article>
+        <article class="finding">
+            <span class="finding-tag">03 · Wireshark</span>
+            <h3>Trafiku HTTP/HTTPS</h3>
+
+            <ul>
+                <li>Në HTTP, header-i <code>Cookie</code> shihet si tekst.</li>
+                <li>Në HTTPS, përmbajtja e trafikut është e koduar.</li>
+            </ul>
+
+            <p class="finding-takeaway">
+                HTTPS mbron cookie-n gjatë transmetimit.
+            </p>
+        </article>
+    </div>
+</section>
     <div class="info-box">
         Cookie-ja e këtij konfigurimi quhet
         <strong id="cookieName">duke u ngarkuar...</strong>.

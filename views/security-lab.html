@@ -79,19 +79,34 @@ Vlera e cookie-së nuk shfaqet automatikisht.</pre>
             <h2>Kontrolli i sesionit</h2>
             <p>
                 Pyete serverin nëse sesioni yt është ende i vlefshëm.
-            </p>
+            </p>    
+           <div class="session-flow-demo" aria-label="Rrjedha e sesionit">
+    <div class="session-flow-step session-active">
+        <strong>200 OK</strong>
+        <span>Sesioni aktiv</span>
+    </div>
 
-            <p id="sessionStatus" class="session-user">
-                Duke kontrolluar sesionin...
-            </p>
+    <span class="session-flow-arrow" aria-hidden="true">→</span>
 
-            <button id="checkSessionButton" class="btn btn-primary" type="button">
-                Verifiko sesionin
-            </button>
+    <div class="session-flow-step session-logout">
+        <strong>Log Out</strong>
+        <span>Anulimi i sesionit</span>
+    </div>
 
-            <p id="sessionResult" class="result-box" role="status" aria-live="polite">
-                Rezultati do të shfaqet këtu.
-            </p>
+    <span class="session-flow-arrow" aria-hidden="true">→</span>
+
+    <div class="session-flow-step session-denied">
+        <strong>401</strong>
+        <span>Qasja refuzohet</span>
+    </div>
+</div>
+    <button id="checkSessionButton" class="btn btn-primary" type="button">
+        Verifiko sesionin
+    </button>
+
+    <p id="sessionResult" class="result-box" role="status" aria-live="polite">
+        Shtyp butonin për ta kontrolluar sesionin.
+    </p>
         </article>
 
         <article class="card lab-card" id="network-test">
@@ -131,8 +146,31 @@ Vlera e cookie-së nuk shfaqet automatikisht.</pre>
                 <li>Fillo kapjen dhe vendos filtrin <code>tcp.port == 3000</code>.</li>
                 <li>Ngarko përsëri këtë faqe në shfletues.</li>
                 <li>Hap një paketë dhe përdor <em>Follow TCP Stream</em>.</li>
-                <li>Krahaso çka shihet në HTTP dhe në HTTPS.</li>
+                <li>
+                 Krahaso çka shihet në HTTP dhe në HTTPS.
+                 <div class="evidence-buttons">
+                 <a class="btn btn-secondary" href="#evidence-http">Shiko pamjen HTTP</a>
+                 <a class="btn btn-secondary" href="#evidence-https">Shiko pamjen HTTPS</a>
+             </div>
+            </li>
             </ol>
+            <div id="evidence-http" class="evidence-overlay">
+    <div class="evidence-window">
+        <a class="evidence-close" href="#network-test">Mbyll ×</a>
+        <h3>Kapja e trafikut HTTP</h3>
+        <img src="/images/wireshark-http.png"
+             alt="Në Wireshark, cookie-ja shihet në trafikun HTTP">
+    </div>
+</div>
+
+<div id="evidence-https" class="evidence-overlay">
+    <div class="evidence-window">
+        <a class="evidence-close" href="#network-test">Mbyll ×</a>
+        <h3>Kapja e trafikut HTTPS</h3>
+        <img src="/images/wireshark-https.png"
+             alt="Në Wireshark, përmbajtja e trafikut HTTPS nuk lexohet">
+    </div>
+</div>
         </article>
     </section>
 
