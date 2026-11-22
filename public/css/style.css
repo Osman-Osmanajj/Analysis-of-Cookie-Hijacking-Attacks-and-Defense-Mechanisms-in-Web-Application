@@ -293,20 +293,6 @@ input {
     padding-top: 55px;
     padding-bottom: 65px;
 }
-.info-box {
-    margin-top: 22px;
-    padding: 20px 24px;
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    background: rgba(23, 44, 66, 0.75);
-    color: var(--muted);
-    line-height: 1.6;
-}
-
-.info-box strong {
-    color: var(--text);
-}
-
 .cookie-output {
     min-height: 90px;
     margin: 18px 0;

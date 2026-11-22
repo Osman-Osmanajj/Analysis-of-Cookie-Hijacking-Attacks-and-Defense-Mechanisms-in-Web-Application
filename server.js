@@ -37,6 +37,9 @@ app.use(helmet({
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+//http true or false to enable
+
+
 const SESSION_COOKIE_SETTINGS = {
     path: "/",
     httpOnly: true,

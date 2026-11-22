@@ -41,10 +41,6 @@ document.getElementById("sameSiteCard").classList.toggle(
     "is-off",
     String(statusData.cookie.sameSite).toLowerCase() === "none"
 );
-
-        document.getElementById("cookieName").textContent =
-            statusData.cookie.name;
-
         if (statusData.protocol === "HTTPS") {
             modeBadge.textContent = "HTTPS · Lidhje e koduar";
         } else {
