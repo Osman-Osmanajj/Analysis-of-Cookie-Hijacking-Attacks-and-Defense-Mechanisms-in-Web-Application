@@ -6,7 +6,7 @@ export default function createRegisterRoutes(usersCollection) {
 
     router.post("/register",async(req,res) =>{
        const username =
-    typeof req.body?.username === "string"
+        typeof req.body?.username === "string"
         ? req.body.username.trim().toLowerCase()
         : "";
 

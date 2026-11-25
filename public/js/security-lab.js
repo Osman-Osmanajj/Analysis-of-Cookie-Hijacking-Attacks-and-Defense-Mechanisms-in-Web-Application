@@ -98,6 +98,8 @@ function maskedCookie() {
     return `${name}=${value.slice(0, 6)}…${value.slice(-4)} (vlera e fshehur)`;
 }
 
+//Leximi i vleres se Cookies permes JS
+
 readCookiesButton.addEventListener("click", () => {
     if (!labConfig) {
         return;
@@ -184,4 +186,3 @@ logoutButton.addEventListener("click", async () => {
 });
 
 loadLabConfig();
-// checkSession();

@@ -28,7 +28,7 @@ export default function createAuthRoutes(usersCollection,sessionCookieName,https
                 message: "Invalid username or password"
             });
         }
-            // Generate a new session ID after login
+            // Krijimi i ID te re se sessionit
             req.session.regenerate((error) =>{
                 if(error){
                     return res.status(500).json({

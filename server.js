@@ -1,4 +1,3 @@
-
 import express from "express";
 import session from "express-session";
 import dotenv from "dotenv";
@@ -77,7 +76,7 @@ app.use((req,res,next) =>{
         if(req.path.startsWith("/api/")){
             return res.status(401).json({
                 success: false,
-                message: "Sessionu u anulua sepse ndryshoi shfletuesi.Kyçu perseri!"
+                message: "Sessioni u anulua sepse ndryshoi shfletuesi.Kyçu perseri!"
             });
         }
         return res.redirect("/login.html");
